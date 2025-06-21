@@ -69,7 +69,7 @@ const Login = () => {
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2 border rounded mb-4"
+          className="w-full px-4 py-2 border border-gray-300 rounded mb-4"
         />
       )}
       <input
@@ -77,7 +77,7 @@ const Login = () => {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full px-4 py-2 border rounded mb-4"
+        className="w-full px-4 py-2 border border-gray-300 rounded mb-4"
       />
       {authMode !== 'forgot' && (
         <input
@@ -85,7 +85,7 @@ const Login = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border rounded mb-4"
+          className="w-full px-4 py-2 border border-gray-300 rounded mb-4"
         />
       )}
       {message && <p className="text-red-600 mb-2 text-sm">{message}</p>}
@@ -109,7 +109,7 @@ const Login = () => {
 
       {authMode === 'login' && (
         <p
-          className="text-sm text-blue-600 mt-2 cursor-pointer"
+          className="text-sm text-blue-600 mt-2 cursor-pointer hover:underline"
           onClick={() => setAuthMode('forgot')}
         >
           Forgot password?
@@ -119,22 +119,20 @@ const Login = () => {
   );
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-xl text-center space-y-6 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-blue-700">EduVault</h1>
-        <p className="text-gray-600">
-          {authMode === 'login'
-            ? 'Login to your study vault.'
-            : authMode === 'signup'
-            ? 'Create an EduVault account.'
-            : 'Reset your password'}
-        </p>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 md:p-10 space-y-6">
+        <div className="text-center">
+          <h1 className="text-4xl font-extrabold text-blue-700 mb-2">EduVault</h1>
+          <p className="text-sm text-gray-600 italic">Secure your knowledge. Access it anywhere.</p>
+        </div>
 
-        <div className="flex justify-center space-x-4 mb-4">
+        <div className="flex justify-center space-x-3 mt-4">
           <button
             onClick={() => setAuthMode('login')}
             className={`px-4 py-2 rounded ${
-              authMode === 'login' ? 'bg-blue-600 text-white' : 'bg-gray-200'
+              authMode === 'login'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700'
             }`}
           >
             Login
@@ -142,14 +140,26 @@ const Login = () => {
           <button
             onClick={() => setAuthMode('signup')}
             className={`px-4 py-2 rounded ${
-              authMode === 'signup' ? 'bg-blue-600 text-white' : 'bg-gray-200'
+              authMode === 'signup'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700'
             }`}
           >
             Sign Up
           </button>
         </div>
 
-        {renderForm()}
+        <div>
+          {authMode === 'login' ? (
+            <p className="text-gray-500 text-sm text-center mb-2">Login to your study vault.</p>
+          ) : authMode === 'signup' ? (
+            <p className="text-gray-500 text-sm text-center mb-2">Create a new EduVault account.</p>
+          ) : (
+            <p className="text-gray-500 text-sm text-center mb-2">Reset your password.</p>
+          )}
+
+          {renderForm()}
+        </div>
       </div>
     </div>
   );

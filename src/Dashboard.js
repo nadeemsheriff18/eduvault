@@ -24,7 +24,6 @@ const Dashboard = () => {
         fetchUserInfo(currentUser.id);
       }
     };
-
     getSession();
   }, [navigate]);
 
@@ -87,13 +86,13 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Navbar */}
-      <div className="bg-white shadow-md p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-blue-600">📘 EduVault</h1>
+      <div className="bg-white shadow p-4 flex flex-col sm:flex-row justify-between items-center">
+        <h1 className="text-2xl font-bold text-blue-600">📘 EduVault</h1>
         {user && (
-          <div className="flex items-center space-x-4">
-            <span className="font-medium text-gray-700">Hi, {userName}</span>
+          <div className="mt-3 sm:mt-0 flex items-center gap-4">
+            <span className="text-gray-700 font-medium">Hi, {userName}</span>
             <button
               onClick={logout}
               className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
@@ -104,32 +103,33 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Main Content */}
-      <div className="p-6 max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
-        {/* Left Panel: Folders */}
+      {/* Main Section */}
+      <div className="flex flex-col lg:flex-row p-4 gap-6 max-w-7xl mx-auto w-full">
+        {/* Folder Section */}
         <div className="flex-1">
-          <div className="flex items-center space-x-4 mb-6">
+          {/* Search & Create */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <input
               type="text"
               placeholder="Search folders..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 rounded border w-full"
+              className="flex-1 px-4 py-2 border rounded"
             />
             <button
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition w-1/4"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               ➕ Create Folder
             </button>
           </div>
 
-          {/* Folders Grid */}
+          {/* Folder Grid */}
           {filteredFolders.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredFolders.map((folder) => (
                 <Link to={`/folder/${folder.id}`} key={folder.id}>
-                  <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition h-32 flex flex-col justify-between">
+                  <div className="bg-white p-4 rounded-lg shadow h-32 flex flex-col justify-between hover:shadow-md transition">
                     <h3 className="text-lg font-semibold text-gray-800 truncate">{folder.name}</h3>
                     <p className="text-sm text-gray-500 mt-1">
                       Created: {new Date(folder.created_at).toLocaleString()}
@@ -143,32 +143,33 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Right Panel: Connections */}
-        <div className="w-full md:w-1/3 bg-white p-4 rounded-lg shadow border">
-          <h3 className="text-lg font-bold mb-4 text-indigo-700">👥 Your Connections</h3>
+        {/* Connections Panel */}
+        <div className="w-full lg:w-1/3 bg-white p-5 rounded-lg shadow border">
+          <h2 className="text-xl font-bold text-indigo-700 mb-4">👥 Your Connections</h2>
+
           {connections.length === 0 ? (
-            <p className="text-gray-500 text-sm">You have no connections.</p>
+            <p className="text-gray-500 text-sm">You have no connections yet.</p>
           ) : (
-            <ul className="space-y-3 mb-4">
+            <ul className="space-y-4 mb-4">
               {connections.map((c) => (
-                <li key={c.id} className="flex flex-col border-b pb-2">
-                  <span className="font-medium text-gray-800">{c.name || 'No Name'}</span>
-                  <span className="text-sm text-gray-500">{c.email}</span>
+                <li key={c.id} className="border-b pb-2">
+                  <p className="text-gray-800 font-medium">{c.name || 'No Name'}</p>
+                  <p className="text-sm text-gray-500">{c.email}</p>
                 </li>
               ))}
             </ul>
           )}
 
-          <div className="flex justify-between gap-2">
+          <div className="flex gap-3">
             <Link
               to="/connections"
-              className="flex-1 text-center bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
+              className="flex-1 bg-indigo-600 text-white text-center py-2 rounded hover:bg-indigo-700"
             >
               View
             </Link>
             <Link
               to="/searchusers"
-              className="flex-1 text-center bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+              className="flex-1 bg-blue-500 text-white text-center py-2 rounded hover:bg-blue-600"
             >
               Add More
             </Link>
@@ -178,9 +179,9 @@ const Dashboard = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-xl shadow-md w-96 space-y-4">
-            <h2 className="text-xl font-bold">Create New Folder</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white w-11/12 sm:w-96 p-6 rounded-xl shadow-md space-y-4">
+            <h2 className="text-lg font-bold text-gray-800">Create New Folder</h2>
             <input
               type="text"
               placeholder="Folder name"
@@ -188,7 +189,7 @@ const Dashboard = () => {
               onChange={(e) => setNewFolderName(e.target.value)}
               className="w-full px-4 py-2 border rounded"
             />
-            <div className="flex justify-end space-x-2">
+            <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowModal(false)}
                 className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
